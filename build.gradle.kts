@@ -4,6 +4,7 @@ plugins {
 }
 
 repositories {
+    maven("https://oss.jfrog.org/artifactory/jfrog-dependencies")
     jcenter()
     maven("https://dl.bintray.com/jwstegemann/fritz2")
 }
@@ -25,6 +26,7 @@ kotlin {
             }
             val jsMain by getting {
                 dependencies {
+                    implementation("dev.fritz2:components:0.9-SNAPSHOT")
                 }
             }
         }
