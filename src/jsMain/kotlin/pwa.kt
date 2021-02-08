@@ -27,17 +27,30 @@ object PwaStyles {
         borders {
             bottom {
                 width { "1px " }
-                style { BorderStyleValues.solid }
-                color { gray }
+                style { solid }
+                color { darkGray }
             }
         }
     }
 
     val sidebar: Style<BasicParams> = {
         background { color { "rgb(44, 49, 54)" } }
-        padding { normal }
         color { lightGray }
         minWidth { "20vw" }
+    }
+
+    val nav: Style<BasicParams> = {
+        padding { normal }
+    }
+
+    val footer: Style<BasicParams> = {
+        padding { normal }
+        borders {
+            top {
+                width { "1px" }
+                color { darkGray }
+            }
+        }
     }
 
     val header: Style<FlexParams> = {
@@ -55,6 +68,7 @@ object PwaStyles {
 
     val main: Style<BasicParams> = {
         padding { normal }
+        background { color { lightestGray } }
     }
 }
 
@@ -118,9 +132,10 @@ open class PwaComponent() {
 
     var brand = ComponentProperty<Div.() -> Unit> {}
     var header = ComponentProperty<TextElement.() -> Unit> {}
-    var actions = ComponentProperty<TextElement.(SimpleHandler<Unit>) -> Unit> { sidebarToggle ->
+    var actions = ComponentProperty<TextElement.() -> Unit> {}
+    var sidebarToggle = ComponentProperty<TextElement.(SimpleHandler<Unit>) -> Unit> { sidebarToggle ->
         clickButton({
-            css("float: right;")
+            display(md = { none })
         }) {
             variant { ghost }
             icon { fromTheme { menu } }
@@ -128,6 +143,7 @@ open class PwaComponent() {
     }
     var nav = ComponentProperty<TextElement.() -> Unit> {}
     var main = ComponentProperty<TextElement.() -> Unit> {}
+    var footer = ComponentProperty<TextElement.() -> Unit> {}
 
 }
 
@@ -144,7 +160,7 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
     box({
         display(sm = { block }, md =  { none })
         opacity { "0" }
-        background { color { "rgba(0,0,0,0.4)"} }
+        background { color { "rgba(0,0,0,0.6)"} }
         position { fixed {
             top { "0" }
             left { "-110vh" }
@@ -165,11 +181,11 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
         grid(sm = { area { "header" } }, md = { area { "brand" } })
         component.mobileSidebar("none")()
         height(sm = { PwaStyles.headerHeight }, md = { unset })
-        PwaStyles.brand()
     }) {
         className(component.openSideBar.whenever(component.sidebarStatus.data).name)
         flexBox({
             height { PwaStyles.headerHeight }
+            PwaStyles.brand()
         }) {
             component.brand.value(this)
         }
@@ -186,7 +202,8 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
                 component.header.value(this)
             }
             section {
-                component.actions.value(this, component.toggleSidebar)
+                component.actions.value(this)
+                component.sidebarToggle.value(this, component.toggleSidebar)
             }
         }
     }
@@ -194,11 +211,28 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
     (::aside.styled {
         grid(sm = { area { "main" } }, md = { area { "sidebar" } })
         component.mobileSidebar(PwaStyles.headerHeight)()
-        height(sm = { "calc(100vh - 5rem)" }, md = { unset })
+        height(sm = { "calc(100vh - ${PwaStyles.headerHeight})" }, md = { unset })
         PwaStyles.sidebar()
     }) {
         className(component.openSideBar.whenever(component.sidebarStatus.data).name)
-        component.nav.value(this)
+
+        flexBox({
+            direction { column }
+            alignItems { stretch }
+            justifyContent { spaceBetween }
+            height { full }
+        }) {
+            (::section.styled {
+                PwaStyles.nav()
+            }) {
+                component.nav.value(this)
+            }
+            (::section.styled {
+                PwaStyles.footer()
+            }) {
+                component.footer.value(this)
+            }
+        }
     }
 
     (::main.styled {

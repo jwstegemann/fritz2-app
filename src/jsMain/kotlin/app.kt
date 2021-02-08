@@ -1,3 +1,7 @@
+import dev.fritz2.components.flexBox
+import dev.fritz2.components.icon
+import dev.fritz2.components.lineUp
+import dev.fritz2.components.pushButton
 import dev.fritz2.dom.html.render
 import dev.fritz2.styling.params.styled
 
@@ -7,20 +11,83 @@ fun main() {
     render {
         pwa {
             brand {
-                + "BRAND!"
+                icon({
+                    color { lightGray }
+                    size { huge }
+                    margins { right { normal } }
+                }) { fromTheme { fritz2 } }
+                (::span.styled{
+                    fontWeight { semiBold }
+                }) { +"Demo App" }
             }
 
             header {
-                + "HEADER!"
+                (::span.styled {
+                    fontSize { large }
+                    fontWeight { semiBold }
+                }) { +"Where you are"}
+            }
+
+            actions {
+                lineUp {
+                    items {
+                        pushButton {
+                            icon { fromTheme { download } }
+                            text("do something")
+                            color { primary }
+                        }
+
+                        pushButton {
+                            icon { fromTheme { barChart } }
+                            text("do nothing")
+                            color { secondary }
+                        }
+                    }
+                }
             }
 
             nav {
                 (1..10).forEach {
-                    (::a.styled { // nav-link
-                        display { block }
+                    lineUp({
                         margins { top { normal } }
+                        alignItems { center }
                     }) {
-                        +"Link $it"
+                        items {
+                            icon({
+                                size { large }
+                            }) { fromTheme { calendar } }
+
+                            (::a.styled { // nav-link
+                                display { block }
+
+                                fontWeight { semiBold }
+                                fontSize { normal }
+                            }) {
+                                +"Link $it"
+                            }
+                        }
+                    }
+                }
+            }
+
+            footer {
+                lineUp({
+                    alignItems { center }
+                    justifyContent { spaceBetween }
+                }) {
+                    items {
+                        icon({
+                            size { huge }
+                        }) { fromTheme { user } }
+                        (::span.styled {
+                            fontSize { normal }
+                        }) { + "Jens Stegemann" }
+                        pushButton {
+                            variant { outline }
+                            color { lightGray }
+                            size { small }
+                            icon { fromTheme { logOut } }
+                        }
                     }
                 }
             }
@@ -33,6 +100,29 @@ fun main() {
                     }) {
                         + "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
                     }
+                }
+
+                flexBox({
+                    width { full }
+                    height { PwaStyles.headerHeight }
+                    borders {
+                        top {
+                            width { "1px"}
+                            color { lightGray }
+                        }
+                    }
+                    position { sticky { bottom { none } } }
+                    alignItems { center }
+                    justifyContent { spaceEvenly }
+                    background { color { "white " } }
+                }) {
+                    pushButton {
+                        icon({
+                            size { huge }
+                        }) { fromTheme { cloudUpload } }
+                        variant { ghost }
+                    }
+
                 }
             }
         }
