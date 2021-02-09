@@ -17,12 +17,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 object PwaStyles {
-    val headerHeight: Property = "3.6rem"
+    const val headerHeight: Property = "3.6rem"
 
     val brand: Style<FlexParams> = {
         //background { color { "rgb(44, 49, 54)"} }
         background { color { primary } }
-        padding { small }
+        paddings {
+            all { small }
+            left { normal }
+        }
         color { lighterGray }
         alignItems { center }
         borders {
@@ -56,7 +59,10 @@ object PwaStyles {
     }
 
     val header: Style<FlexParams> = {
-        padding { small }
+        paddings {
+            all { small }
+            left { normal }
+        }
         alignItems { center }
         justifyContent { spaceBetween }
         color { "rgb(44, 49, 54)"}
@@ -83,6 +89,29 @@ object PwaStyles {
                 color { gray }
             }
         }
+        height { PwaStyles.headerHeight }
+        paddings {
+            top { tiny }
+            bottom { tiny }
+        }
+        children(" > button") {
+            flex {
+                grow {"1"}
+                shrink { "1" }
+                basis { auto }
+            }
+            radius { none }
+            height { full }
+            padding { none }
+        }
+        children(" > button:not(:first-child)") {
+            borders {
+                left {
+                    width { "1px" }
+                    color { lighterGray }
+                }
+            }
+        }
     }
 }
 
@@ -101,7 +130,7 @@ open class PwaComponent() {
                         "brand header"
                         "sidebar main"
                         "sidebar footer";
-                    grid-template-rows: ${PwaStyles.headerHeight} 1fr ${PwaStyles.headerHeight};
+                    grid-template-rows: ${PwaStyles.headerHeight} 1fr min-content;
                     grid-auto-columns: min-content 1fr;
         
                     padding: 0;
@@ -146,20 +175,22 @@ open class PwaComponent() {
     }
 
     var brand = ComponentProperty<Div.() -> Unit> {}
-    var header = ComponentProperty<TextElement.() -> Unit> {}
+    var header = ComponentProperty<RenderContext.() -> Unit> {}
     var actions = ComponentProperty<RenderContext.() -> Unit> {}
     var sidebarToggle = ComponentProperty<RenderContext.(SimpleHandler<Unit>) -> Unit> { sidebarToggle ->
         clickButton({
             display(md = { none })
+            padding { none }
+            margins { left { "-.5rem" } }
         }) {
-            variant { ghost }
+            variant { link }
             icon { fromTheme { menu } }
         } handledBy sidebarToggle
     }
     var nav = ComponentProperty<TextElement.() -> Unit> {}
     var main = ComponentProperty<TextElement.() -> Unit> {}
     var footer = ComponentProperty<TextElement.() -> Unit> {}
-    var tabs = ComponentProperty<Div.() -> Unit> {}
+    var tabs = ComponentProperty<(Div.() -> Unit)?>(null)
 
 
 }
@@ -219,16 +250,19 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
             height { PwaStyles.headerHeight }
             PwaStyles.header()
         }) {
-            section {
-                component.header.value(this)
-            }
-            section {
-                lineUp {
-                    items {
-                        component.actions.value(this)
-                        component.sidebarToggle.value(this, component.toggleSidebar)
-                    }
+            lineUp({
+                alignItems { center }
+            }) {
+                spacing { tiny }
+                items {
+                    component.sidebarToggle.value(this, component.toggleSidebar)
+                    component.header.value(this)
                 }
+            }
+            (::section.styled {
+                display(sm = { none }, md = { block })
+            }) {
+                component.actions.value(this)
             }
         }
     }
@@ -292,17 +326,18 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
 
     }
 
-    flexBox( {
-        grid { area { "footer" } }
-        PwaStyles.tabs()
-        direction { row }
-        alignItems { center }
-        justifyContent { spaceEvenly }
+    component.tabs.value?.let { tabs ->
+        flexBox( {
+            grid { area { "footer" } }
+            direction { row }
+            alignItems { center }
+            justifyContent { spaceEvenly }
+            PwaStyles.tabs()
 //        overflow { auto }
 //        PwaStyles.main()
 //        height { "calc(100vh - ${PwaStyles.headerHeight})" }
-    }) {
-        component.tabs.value(this)
+        }) {
+            tabs(this)
+        }
     }
-
 }

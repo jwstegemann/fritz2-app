@@ -105,19 +105,20 @@ fun main() {
             }
 
             tabs {
-                pushButton {
+                pushButton({
+                }) {
                     icon { fromTheme { cloudUpload } }
-                    variant { ghost }
+                    variant { link }
 //                    size { large }
                 }
                 pushButton {
                     icon { fromTheme { circleArrowLeft } }
-                    variant { ghost }
+                    variant { link }
 //                    size { large }
                 }
                 pushButton {
                     icon { fromTheme { documentEmpty } }
-                    variant { ghost }
+                    variant { link }
 //                    size { large }
                 }
             }
