@@ -1,10 +1,12 @@
-import dev.fritz2.binding.Store
-import dev.fritz2.binding.watch
 import dev.fritz2.components.*
 import dev.fritz2.dom.html.RenderContext
-import dev.fritz2.styling.*
+import dev.fritz2.styling.StyleClass
+import dev.fritz2.styling.name
 import dev.fritz2.styling.params.BasicParams
 import dev.fritz2.styling.params.styled
+import dev.fritz2.styling.staticStyle
+import dev.fritz2.styling.theme.important
+import dev.fritz2.styling.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -16,39 +18,29 @@ open class NavLinkComponent {
             background { color { "rgba(0,0,0,0.2)" } }
             borders {
                 left {
-                    width { "0.2rem" }
-                    color { lightGray }
+                    color { lightGray.important }
                 }
             }
         }
     }
 
-    var icon = ComponentProperty<IconComponent.() -> Unit> { fromTheme { bookmark }}
+    var icon = ComponentProperty<IconComponent.() -> Unit> { fromTheme { bookmark } }
     var text = DynamicComponentProperty<String>(flowOf("Navigation Link"))
     var active = ComponentProperty<Flow<Boolean>?>(null)
 }
 
 @ExperimentalCoroutinesApi
-fun RenderContext.navLink(styling: BasicParams.() -> Unit = {},
-                      baseClass: StyleClass? = null,
-                      id: String? = null,
-                      prefix: String = "navlink",
-                      build: NavLinkComponent.() -> Unit = {}
+fun RenderContext.navLink(
+    styling: BasicParams.() -> Unit = {},
+    baseClass: StyleClass? = null,
+    id: String? = null,
+    prefix: String = "navlink",
+    build: NavLinkComponent.() -> Unit = {}
 ) {
     val component = NavLinkComponent().apply(build)
 
     lineUp({
-        paddings {
-            vertical { "0.6rem" }
-            horizontal { small }
-        }
-        alignItems { center }
-        borders {
-            left {
-                width { "0.2rem" }
-                color { "transparent" }
-            }
-        }
+        PwaStyles.navLink()
         styling()
     }, baseClass, id, prefix) {
         items {
@@ -72,23 +64,16 @@ fun RenderContext.navLink(styling: BasicParams.() -> Unit = {},
 }
 
 @ExperimentalCoroutinesApi
-fun RenderContext.navSection(styling: BasicParams.() -> Unit = {},
-                             text: String,
-                          baseClass: StyleClass? = null,
-                          id: String? = null,
-                          prefix: String = "navsection",
-                          build: NavLinkComponent.() -> Unit = {}
+fun RenderContext.navSection(
+    text: String,
+    styling: BasicParams.() -> Unit = {},
+    baseClass: StyleClass? = null,
+    id: String? = null,
+    prefix: String = "navsection",
 ) {
-    (::h3.styled {
-        paddings {
-            vertical { "0.5rem" }
-            horizontal { small }
-        }
-        margins { top { small } }
-        textTransform { uppercase }
-        fontWeight { bold }
-        fontSize { ".9rem" }
-        color { gray }
+    (::h3.styled(baseClass, id, prefix) {
+        PwaStyles.navSection()
+        styling()
     }) { +text }
 }
 

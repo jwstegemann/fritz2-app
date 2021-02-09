@@ -18,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 object PwaStyles {
     const val headerHeight: Property = "3.6rem"
+    const val mobileSidebarWidth: Property = "80vw"
 
     val brand: Style<FlexParams> = {
         //background { color { "rgb(44, 49, 54)"} }
@@ -111,6 +112,32 @@ object PwaStyles {
             }
         }
     }
+
+    val navLink: Style<FlexParams> = {
+        paddings {
+            vertical { "0.6rem" }
+            horizontal { small }
+        }
+        alignItems { AlignItemsValues.center }
+        borders {
+            left {
+                width { "0.2rem" }
+                color { "transparent" }
+            }
+        }
+    }
+
+    val navSection: Style<BasicParams> = {
+        paddings {
+            vertical { "0.5rem" }
+            horizontal { small }
+        }
+        margins { top { small } }
+        textTransform { uppercase }
+        fontWeight { bold }
+        fontSize { ".9rem" }
+        color { gray }
+    }
 }
 
 @ExperimentalCoroutinesApi
@@ -156,7 +183,7 @@ open class PwaComponent() {
 
     fun mobileSidebar(topPosition: Property): Style<BasicParams> = {
         zIndex { "5000" }
-        width(sm = { "90vw"}, md = { unset })
+        width(sm = { PwaStyles.mobileSidebarWidth }, md = { unset })
         css(sm = "transform: translateX(-110vw);", md = "transform: unset;")
         position(sm = {
             fixed { top { topPosition } }

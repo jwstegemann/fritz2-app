@@ -51,7 +51,7 @@ fun main() {
             }
 
             nav {
-                navSection(text = "Section Header")
+                navSection("Section Header")
                 (1..5).forEach {
                     navLink {
                         icon { fromTheme { calendar } }
@@ -60,7 +60,7 @@ fun main() {
                     }
                 }
 
-                navSection(text = "Another Section")
+                navSection("Another Section")
                 (1..3).forEach {
                     navLink {
                         icon { fromTheme { call } }
