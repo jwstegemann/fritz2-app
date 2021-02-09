@@ -31,8 +31,11 @@ object PwaStyles {
         borders {
             bottom {
                 width { "1px " }
-                style { solid }
                 color { gray }
+            }
+            right {
+                width { "1px " }
+                color { darkerGray }
             }
         }
     }
@@ -41,10 +44,18 @@ object PwaStyles {
         background { color { primary } }
         color { lighterGray }
         minWidth { "22vw" }
+        borders {
+            right {
+                width { "1px " }
+                color { darkerGray }
+            }
+        }
     }
 
     val nav: Style<BasicParams> = {
-        padding { normal }
+        paddings {
+            top { small }
+        }
     }
 
     val footer: Style<BasicParams> = {
@@ -90,10 +101,7 @@ object PwaStyles {
             }
         }
         height { PwaStyles.headerHeight }
-        paddings {
-            top { tiny }
-            bottom { tiny }
-        }
+        padding { tiny }
         children(" > button") {
             flex {
                 grow {"1"}
@@ -259,9 +267,7 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
                     component.header.value(this)
                 }
             }
-            (::section.styled {
-                display(sm = { none }, md = { block })
-            }) {
+            section {
                 component.actions.value(this)
             }
         }

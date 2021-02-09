@@ -32,7 +32,9 @@ fun main() {
             actions {
                 lineUp {
                     items {
-                        pushButton {
+                        pushButton({
+                            display(sm = { none}, md = { block })
+                        }) {
                             icon { fromTheme { download } }
                             text("do something")
                             color { primary }
@@ -50,8 +52,17 @@ fun main() {
             nav {
                 (1..10).forEach {
                     lineUp({
-                        margins { top { normal } }
+                        padding { small }
                         alignItems { center }
+                        if (it == 3) {
+                            background { color { "rgba(0,0,0,0.2)" }}
+                            borders {
+                                left {
+                                    width { "0.2rem" }
+                                    color { lightGray }
+                                }
+                            }
+                        }
                     }) {
                         items {
                             icon({
@@ -109,17 +120,14 @@ fun main() {
                 }) {
                     icon { fromTheme { cloudUpload } }
                     variant { link }
-//                    size { large }
                 }
                 pushButton {
                     icon { fromTheme { circleArrowLeft } }
                     variant { link }
-//                    size { large }
                 }
                 pushButton {
                     icon { fromTheme { documentEmpty } }
                     variant { link }
-//                    size { large }
                 }
             }
         }
