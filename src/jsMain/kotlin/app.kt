@@ -12,19 +12,20 @@ fun main() {
         pwa {
             brand {
                 icon({
-                    color { lightGray }
-                    size { huge }
+                    color { lighterGray }
+                    size { "2rem" }
                     margins { right { normal } }
                 }) { fromTheme { fritz2 } }
                 (::span.styled{
                     fontWeight { semiBold }
+                    fontSize { large }
                 }) { +"Demo App" }
             }
 
             header {
                 (::span.styled {
-                    fontSize { large }
                     fontWeight { semiBold }
+                    fontSize { large }
                 }) { +"Where you are"}
             }
 
@@ -81,7 +82,7 @@ fun main() {
                         }) { fromTheme { user } }
                         (::span.styled {
                             fontSize { normal }
-                        }) { + "Jens Stegemann" }
+                        }) { + "Jens" }
                         pushButton {
                             variant { outline }
                             color { lightGray }
@@ -101,28 +102,23 @@ fun main() {
                         + "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
                     }
                 }
+            }
 
-                flexBox({
-                    width { full }
-                    height { PwaStyles.headerHeight }
-                    borders {
-                        top {
-                            width { "1px"}
-                            color { lightGray }
-                        }
-                    }
-                    position { sticky { bottom { none } } }
-                    alignItems { center }
-                    justifyContent { spaceEvenly }
-                    background { color { "white " } }
-                }) {
-                    pushButton {
-                        icon({
-                            size { huge }
-                        }) { fromTheme { cloudUpload } }
-                        variant { ghost }
-                    }
-
+            tabs {
+                pushButton {
+                    icon { fromTheme { cloudUpload } }
+                    variant { ghost }
+//                    size { large }
+                }
+                pushButton {
+                    icon { fromTheme { circleArrowLeft } }
+                    variant { ghost }
+//                    size { large }
+                }
+                pushButton {
+                    icon { fromTheme { documentEmpty } }
+                    variant { ghost }
+//                    size { large }
                 }
             }
         }

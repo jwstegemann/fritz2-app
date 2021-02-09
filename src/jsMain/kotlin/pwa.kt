@@ -20,23 +20,24 @@ object PwaStyles {
     val headerHeight: Property = "3.6rem"
 
     val brand: Style<FlexParams> = {
-        background { color { "rgb(44, 49, 54)"} }
+        //background { color { "rgb(44, 49, 54)"} }
+        background { color { primary } }
         padding { small }
-        color { lightGray }
+        color { lighterGray }
         alignItems { center }
         borders {
             bottom {
                 width { "1px " }
                 style { solid }
-                color { darkGray }
+                color { gray }
             }
         }
     }
 
     val sidebar: Style<BasicParams> = {
-        background { color { "rgb(44, 49, 54)" } }
-        color { lightGray }
-        minWidth { "20vw" }
+        background { color { primary } }
+        color { lighterGray }
+        minWidth { "22vw" }
     }
 
     val nav: Style<BasicParams> = {
@@ -44,11 +45,12 @@ object PwaStyles {
     }
 
     val footer: Style<BasicParams> = {
-        padding { normal }
+        height { PwaStyles.headerHeight }
+        padding { small }
         borders {
             top {
                 width { "1px" }
-                color { darkGray }
+                color { gray }
             }
         }
     }
@@ -57,6 +59,7 @@ object PwaStyles {
         padding { small }
         alignItems { center }
         justifyContent { spaceBetween }
+        color { "rgb(44, 49, 54)"}
         borders {
             bottom {
                 width { "1px "}
@@ -69,6 +72,17 @@ object PwaStyles {
     val main: Style<BasicParams> = {
         padding { normal }
         background { color { lightestGray } }
+        color { "rgb(44, 49, 54)"}
+    }
+
+    val tabs: Style<FlexParams> = {
+        borders {
+            top {
+                width { "1px "}
+                style { solid }
+                color { gray }
+            }
+        }
     }
 }
 
@@ -85,8 +99,9 @@ open class PwaComponent() {
                     display: grid;
                     grid-template-areas:
                         "brand header"
-                        "sidebar main";
-                    grid-template-rows: ${PwaStyles.headerHeight} 1fr;
+                        "sidebar main"
+                        "sidebar footer";
+                    grid-template-rows: ${PwaStyles.headerHeight} 1fr ${PwaStyles.headerHeight};
                     grid-auto-columns: min-content 1fr;
         
                     padding: 0;
@@ -132,8 +147,8 @@ open class PwaComponent() {
 
     var brand = ComponentProperty<Div.() -> Unit> {}
     var header = ComponentProperty<TextElement.() -> Unit> {}
-    var actions = ComponentProperty<TextElement.() -> Unit> {}
-    var sidebarToggle = ComponentProperty<TextElement.(SimpleHandler<Unit>) -> Unit> { sidebarToggle ->
+    var actions = ComponentProperty<RenderContext.() -> Unit> {}
+    var sidebarToggle = ComponentProperty<RenderContext.(SimpleHandler<Unit>) -> Unit> { sidebarToggle ->
         clickButton({
             display(md = { none })
         }) {
@@ -144,6 +159,8 @@ open class PwaComponent() {
     var nav = ComponentProperty<TextElement.() -> Unit> {}
     var main = ComponentProperty<TextElement.() -> Unit> {}
     var footer = ComponentProperty<TextElement.() -> Unit> {}
+    var tabs = ComponentProperty<Div.() -> Unit> {}
+
 
 }
 
@@ -158,20 +175,24 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
     val component = PwaComponent().apply(build)
 
     box({
-        display(sm = { block }, md =  { none })
+        display(sm = { block }, md = { none })
         opacity { "0" }
-        background { color { "rgba(0,0,0,0.6)"} }
-        position { fixed {
-            top { "0" }
-            left { "-110vh" }
-        } }
+        background { color { "rgba(0,0,0,0.6)" } }
+        position {
+            fixed {
+                top { "0" }
+                left { "-110vh" }
+            }
+        }
         width { "100vw" }
         height { "100vh" }
         zIndex { "4000" }
-        css("""
+        css(
+            """
             transition: 
                 opacity .3s ease-in;        
-        """.trimIndent())
+        """.trimIndent()
+        )
     }, prefix = "backdrop") {
         className(component.showBackdrop.whenever(component.sidebarStatus.data).name)
         clicks handledBy component.toggleSidebar
@@ -202,8 +223,12 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
                 component.header.value(this)
             }
             section {
-                component.actions.value(this)
-                component.sidebarToggle.value(this, component.toggleSidebar)
+                lineUp {
+                    items {
+                        component.actions.value(this)
+                        component.sidebarToggle.value(this, component.toggleSidebar)
+                    }
+                }
             }
         }
     }
@@ -239,7 +264,45 @@ fun RenderContext.pwa(styling: BasicParams.() -> Unit = {},
         grid { area { "main" } }
         overflow { auto }
         PwaStyles.main()
+//        height { "calc(100vh - ${PwaStyles.headerHeight})" }
     }) {
         component.main.value(this)
+
+
+//        flexBox({
+//            height { full }
+//            width { full }
+//            direction { column }
+//        }) {
+//            (::section.styled {
+//                flex { grow { "1" } }
+//                overflow { auto }
+//                PwaStyles.main()
+//            }) {
+//                component.main.value(this)
+//            }
+//            (::section.styled {
+//                flex { grow { "0" } }
+//                height { PwaStyles.headerHeight }
+//            }) {
+//                component.tabs.value(this)
+//            }
+//        }
+
+
     }
+
+    flexBox( {
+        grid { area { "footer" } }
+        PwaStyles.tabs()
+        direction { row }
+        alignItems { center }
+        justifyContent { spaceEvenly }
+//        overflow { auto }
+//        PwaStyles.main()
+//        height { "calc(100vh - ${PwaStyles.headerHeight})" }
+    }) {
+        component.tabs.value(this)
+    }
+
 }
