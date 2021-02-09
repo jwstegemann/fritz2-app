@@ -33,10 +33,6 @@ object PwaStyles {
                 width { "1px " }
                 color { gray }
             }
-            right {
-                width { "1px " }
-                color { darkerGray }
-            }
         }
     }
 
@@ -44,12 +40,6 @@ object PwaStyles {
         background { color { primary } }
         color { lighterGray }
         minWidth { "22vw" }
-        borders {
-            right {
-                width { "1px " }
-                color { darkerGray }
-            }
-        }
     }
 
     val nav: Style<BasicParams> = {
@@ -81,7 +71,7 @@ object PwaStyles {
             bottom {
                 width { "1px "}
                 style { solid }
-                color { lightGray }
+                color { lighterGray }
             }
         }
     }
@@ -97,7 +87,7 @@ object PwaStyles {
             top {
                 width { "1px "}
                 style { solid }
-                color { gray }
+                color { lighterGray }
             }
         }
         height { PwaStyles.headerHeight }

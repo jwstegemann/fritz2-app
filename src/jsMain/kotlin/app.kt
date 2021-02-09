@@ -4,6 +4,7 @@ import dev.fritz2.components.lineUp
 import dev.fritz2.components.pushButton
 import dev.fritz2.dom.html.render
 import dev.fritz2.styling.params.styled
+import kotlinx.coroutines.flow.flowOf
 
 
 fun main() {
@@ -50,34 +51,20 @@ fun main() {
             }
 
             nav {
-                (1..10).forEach {
-                    lineUp({
-                        padding { small }
-                        alignItems { center }
-                        if (it == 3) {
-                            background { color { "rgba(0,0,0,0.2)" }}
-                            borders {
-                                left {
-                                    width { "0.2rem" }
-                                    color { lightGray }
-                                }
-                            }
-                        }
-                    }) {
-                        items {
-                            icon({
-                                size { large }
-                            }) { fromTheme { calendar } }
+                navSection(text = "Section Header")
+                (1..5).forEach {
+                    navLink {
+                        icon { fromTheme { calendar } }
+                        text("Link No. $it")
+                        if (it == 3) active(flowOf(true))
+                    }
+                }
 
-                            (::a.styled { // nav-link
-                                display { block }
-
-                                fontWeight { semiBold }
-                                fontSize { normal }
-                            }) {
-                                +"Link $it"
-                            }
-                        }
+                navSection(text = "Another Section")
+                (1..3).forEach {
+                    navLink {
+                        icon { fromTheme { call } }
+                        text("Other Link $it")
                     }
                 }
             }
