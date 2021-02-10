@@ -1,0 +1,22 @@
+{
+  "short_name": "Demo",
+  "name": "fritz2 Demo App",
+  "icons": [
+    {
+      "src": "/img/fritz2_192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/fritz2_192.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#3367D6",
+  "display": "fullscreen",
+  "scope": "/",
+  "theme_color": "#3367D6",
+  "description": "fritz demo app"
+}
