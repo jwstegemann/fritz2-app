@@ -45,20 +45,8 @@ fun RenderContext.navLink(
     }, baseClass, id, prefix) {
         items {
             component.active.value?.let { className(NavLinkComponent.activeStyle.whenever(it).name) }
-            icon({
-                size { large }
-                margins {
-                    left { tiny }
-                }
-            }, build = component.icon.value)
-
-            (::a.styled {
-                display { block }
-                fontWeight { semiBold }
-                fontSize { normal }
-            }) {
-                component.text.values.asText()
-            }
+            icon(build = component.icon.value)
+            a { component.text.values.asText() }
         }
     }
 }

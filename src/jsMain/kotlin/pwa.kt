@@ -38,14 +38,18 @@ object PwaStyles {
     }
 
     val sidebar: Style<BasicParams> = {
-        background { color { primary } }
+        css(
+            sm = "background: linear-gradient(0deg, ${Theme().colors.dark} 0%, ${Theme().colors.primary} 20%);",
+            lg = "background: linear-gradient(0deg, ${Theme().colors.dark} 0%, ${Theme().colors.primary} 20%);"
+        )
+//        background { color { primary } }
         color { lighterGray }
         minWidth { "22vw" }
     }
 
     val nav: Style<BasicParams> = {
         paddings {
-            top { small }
+            top { tiny }
         }
     }
 
@@ -124,6 +128,17 @@ object PwaStyles {
                 width { "0.2rem" }
                 color { "transparent" }
             }
+        }
+        children(" .icon") {
+            size { large }
+            margins {
+                left { tiny }
+            }
+        }
+        children(" a") {
+            display { block }
+            fontWeight { semiBold }
+            fontSize { normal }
         }
     }
 
