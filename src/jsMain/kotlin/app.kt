@@ -10,28 +10,13 @@ import kotlin.js.Promise
 
 external val self: ServiceWorkerGlobalScope
 
-const val CACHE_NAME = "my-site-cache-v1"
-val urlsToCache = arrayOf(
-"/",
-"/st􏰁les/main.css",
-"/images/dog.svg",
-"/images/cat.cvg"
-)
-fun installServiceWorker() { self.addEventListener("install", { event ->
-    event as InstallEvent
-    event.waitUntil(
-        self.caches.open(CACHE_NAME)
-            .then { it.addAll(urlsToCache) }
-    ) })
-}
-
 fun main() {
     try {
         window.addEventListener("load", {
             window.navigator.serviceWorker.register("/serviceWorker.js") })
-            console.log("Service Worker registered")
+            console.log("ServiceWorker registered")
     } catch (t: Throwable) {
-            console.log("Error registering ervice Worker:", t)
+            console.log("Error registering ServiceWorker:", t)
     }
 
     render {
