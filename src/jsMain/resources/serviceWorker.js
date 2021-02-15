@@ -5,10 +5,10 @@ var cacheFiles = [
   // If loading from cache, fetch from network in the background to update the resource. Examples:
   // 'assets/img/logo.png',
   // 'assets/models/controller.gltf',
-    '/',
-    '/fritz2-template.js',
-    '/img/fritz2_192.png',
-    '/img/fritz2_512.png'
+//    '/',
+//    '/fritz2-template.js',
+//    '/img/fritz2_192.png',
+//    '/img/fritz2_512.png'
 ];
 
 
