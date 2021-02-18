@@ -3,12 +3,7 @@ import dev.fritz2.dom.html.render
 import dev.fritz2.styling.params.styled
 import kotlinx.browser.window
 import kotlinx.coroutines.flow.flowOf
-import org.w3c.workers.InstallEvent
-import org.w3c.workers.ServiceWorkerGlobalScope
-import org.w3c.workers.ServiceWorkerRegistration
-import kotlin.js.Promise
 
-external val self: ServiceWorkerGlobalScope
 
 fun main() {
     try {
@@ -20,7 +15,7 @@ fun main() {
     }
 
     render {
-        pwa {
+        appFrame {
             brand {
                 icon({
                     color { lighterGray }
@@ -95,7 +90,7 @@ fun main() {
                         }) { fromTheme { user } }
                         (::span.styled {
                             fontSize { normal }
-                        }) { + "Jens Stegemann" }
+                        }) { + "John Doe" }
                         pushButton {
                             variant { outline }
                             color { lightGray }

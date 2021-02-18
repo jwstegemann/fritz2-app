@@ -26,7 +26,7 @@ kotlin {
             }
             val jsMain by getting {
                 dependencies {
-                    implementation("dev.fritz2:components:0.189.123")
+                    implementation("dev.fritz2:components:0.9-SNAPSHOT")
                 }
             }
         }
